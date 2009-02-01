@@ -116,15 +116,20 @@ Now you can copy %s to whatever location your application server wants it.
             # We are on a Jython stand-alone installation.
             self.copy_java_jar(exploded_war_dir, jython_home)
         else:
+            # Is this Jython installation an official release version?
             if os.path.exists(os.path.join(jython_home, 'jython.jar')):
-                # Release installation: jython.jar is self-contained
                 self.copy_java_jar(exploded_war_dir,
                                    os.path.join(jython_home,
                                                 'jython.jar'))
-                # TODO: Extract modjy!
+                # TODO: When jython2.5b2 goes out, find out if there is any
+                #       extra step to include modjy.
+                #
+                #       Note that on the meantime, we aren't really supporting
+                #       official releases of jython, as modjy wasn't being
+                #       previously included.
             else:
                 # SVN installation: jython-dev.jar inside jython_home. Also need
-                # the jarjar.jar support file:
+                # to include the extra java libraries
                 self.copy_java_jar(exploded_war_dir,
                                    os.path.join(jython_home, 'jython-dev.jar'))
                 for jar in glob.glob(os.path.join(jython_home,
@@ -284,7 +289,7 @@ deployed settings file. You can append the following block at the end of the fil
         war = zipfile.ZipFile(war_file_name, 'w',
                               compression=zipfile.ZIP_DEFLATED)
         def walker(arg, directory, files):
-            # The following + 1 accounts for the path separator after the
+            # The following "+ 1" accounts for the path separator after the
             # directory name
             relative_dir = directory[len(exploded_war_dir) + 1:]
             for f in files:
