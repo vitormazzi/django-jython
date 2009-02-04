@@ -10,10 +10,6 @@ from django.template import Context, Template
 
 # TODO: The (ab)use of __file__ makes me nervous. We should improve compatibility
 #       with zipimport.
-#
-#       Also, I'd like to move application.py out of the WAR root. Need to check
-#       if modjy can support a path relative to the war root to specify the
-#       location of application.py.
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
