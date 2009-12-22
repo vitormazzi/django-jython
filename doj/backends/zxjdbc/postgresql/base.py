@@ -7,6 +7,12 @@ except ImportError, e:
     from django.core.exceptions import ImproperlyConfigured
     raise ImproperlyConfigured("Error loading zxJDBC module: %s" % e)
 
+try:
+    from javax.naming import Context
+except ImportError, e:
+    from django.core.exceptions import ImproperlyConfigured
+    raise ImproperlyConfigured("Error loading JNDI module: %s" % e)
+
 from django.db.backends import BaseDatabaseWrapper, BaseDatabaseFeatures, BaseDatabaseValidation
 from django.db.backends.postgresql.operations import DatabaseOperations as PostgresqlDatabaseOperations
 from django.db.backends.postgresql.client import DatabaseClient
@@ -80,12 +86,25 @@ class DatabaseWrapper(BaseDatabaseWrapper):
                     or '')
             conn_string = "jdbc:postgresql://%s%s/%s" % (
                     host, port, settings_dict['DATABASE_NAME'])
-            self.connection = Database.connect(
-                    conn_string,
-                    settings_dict['DATABASE_USER'],
-                    settings_dict['DATABASE_PASSWORD'],
-                    'org.postgresql.Driver',
-                    **settings_dict['DATABASE_OPTIONS'])
+            if 'JNDI_NAME' in settings_dict['DATABASE_OPTIONS']:
+                # special case for JNDI lookups
+
+                jndi_name = settings_dict['DATABASE_OPTIONS']['JNDI_NAME']
+                # Default the JNDI endpoint to a Glassfish instance
+                # running on localhost
+                jndi_endpoint = settings_dict['DATABASE_OPTIONS'].get('JNDI_ENDPOINT', 'localhost:3700')
+                jndi_ctx_factory = settings_dict['DATABASE_OPTIONS'].get('JNDI_INITIAL_CONTEXT_FACTORY', 'localhost:3700')
+                props = {'com.sun.appserv.iiop.endpoints':jndi_endpoint,
+                        Context.INITIAL_CONTEXT_FACTORY:jndi_ctx_factory}
+
+                self.connection = Database.lookup(jndi_name, keywords=props)
+            else:
+                self.connection = Database.connect(
+                        conn_string,
+                        settings_dict['DATABASE_USER'],
+                        settings_dict['DATABASE_PASSWORD'],
+                        'org.postgresql.Driver',
+                        **settings_dict['DATABASE_OPTIONS'])
             # make transactions transparent to all cursors
             set_default_isolation_level(self.connection)
         real_cursor = self.connection.cursor()
