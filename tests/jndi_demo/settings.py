@@ -1,5 +1,4 @@
-
-# Django settings for project project.
+# Django settings for jndi_demo project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -16,6 +15,7 @@ DATABASE_USER = 'ngvictor'
 DATABASE_PASSWORD = 'nosecrets'
 DATABASE_OPTIONS  = {'RAW_CONNECTION_FALLBACK': True, \
                     'JNDI_NAME': 'jdbc/pgpool-demo' }
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -49,7 +49,7 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '_8lxqg5u^s1%lx85h^2v)d#mh0ts4yjw0%j=6$vx-j$o7$i6c-'
+SECRET_KEY = '-2vlji*do!kbhw4w&_u&2xhue2+k_z-b5im0fwlmenjcul^f6p'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -64,7 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-ROOT_URLCONF = 'project.urls'
+ROOT_URLCONF = 'jndi_demo.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -73,11 +73,9 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'other_pkg.other_app',
-    'other_pkg.yet_another_app',
-    'doj'
 )
