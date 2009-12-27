@@ -10,12 +10,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'doj.backends.zxjdbc.postgresql'
-DATABASE_NAME = 'demodb' 
-DATABASE_USER = 'ngvictor' 
-DATABASE_PASSWORD = 'nosecrets'
-DATABASE_OPTIONS  = {'RAW_CONNECTION_FALLBACK': True, \
-                    'JNDI_NAME': 'jdbc/pgpool-demo' }
+DATABASE_ENGINE = ''
+DATABASE_NAME = '' 
+DATABASE_USER = '' 
+DATABASE_PASSWORD = ''
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
