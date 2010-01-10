@@ -7,3 +7,4 @@ build
 MANIFEST
 semantic.cache
 dist/*
+docs/_build/*
