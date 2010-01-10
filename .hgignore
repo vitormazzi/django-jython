@@ -5,3 +5,4 @@ syntax:glob
 *.war
 build
 MANIFEST
+semantic.cache
